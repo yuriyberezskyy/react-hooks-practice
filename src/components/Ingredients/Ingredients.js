@@ -22,7 +22,9 @@ function Ingredients() {
       })
   }, [])
 
-
+  useEffect(() => {
+    console.log("Rerender:", userIngredients)
+  }, [userIngredients])
 
 
   const addIngredientHandler = (ingredient) => {

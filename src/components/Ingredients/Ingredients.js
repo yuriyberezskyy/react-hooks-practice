@@ -3,9 +3,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import IngredientForm from "./IngredientForm";
 import Search from "./Search";
 import IngredientList from "./IngredientList";
+import ErrorModal from '../UI/ErrorModal'
+
 function Ingredients() {
   const [userIngredients, setUserIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState();
 
   useEffect(() => {
     console.log("Rerender:", userIngredients)
@@ -37,6 +40,8 @@ function Ingredients() {
       setIsLoading(false)
       const filteredIngredients = userIngredients.filter(el => el.id !== idIngredient)
       setUserIngredients(filteredIngredients)
+    }).catch(error => {
+      setError("something went wrong!")
     })
 
   }
@@ -46,8 +51,16 @@ function Ingredients() {
       setUserIngredients(filteredIngredients)
     }, [])
 
+
+  const clearError = () => {
+    setError(null);
+    setIsLoading(false)
+  }
+
   return (
     <div className="App">
+      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
+
       <IngredientForm onAddIngredient={addIngredientHandler} loading={isLoading} />
 
       <section>
